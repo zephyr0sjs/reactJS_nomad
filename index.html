@@ -22,26 +22,48 @@
     const root = document.getElementById("root");
 
     function App() {
-      const [minutes, setMinutes] = React.useState();
+      const [amount, setAmount] = React.useState();
+      const [flipped, setFlipped] = React.useState(false);
+
       const onChange = (event) => {
-        setMinutes(event.target.value);
+        setAmount(event.target.value);
+      };
+      const reset = () => {
+        setAmount(0);
+      };
+      const onFlip = () => {
+        reset();
+        setFlipped((current) => !current); //flip 버튼을 누르면 flipped 변수의 true,false 를 toggle
       };
 
       return (
         // className 과 htmlFor 는 javascript 문법인 class 와 for 와 구분하기 위한 React 문법
         <div>
-          <h1 className="hi">Super Converter</h1>
-          <label htmlFor="minutes">Minutes</label>
-          <input
-            id="minutes"
-            value={minutes}
-            placeholder="Minutes"
-            type="number"
-            onChange={onChange} // input의 value 가 변경되었을때의 이벤트
-          />
-          <h4>You want to convert {minutes}</h4>
-          <label htmlFor="hours">Hours</label>
-          <input id="hours" placeholder="Hours" type="number" />
+          <h1>Super Converter</h1>
+          <div>
+            <label htmlFor="amount">Minutes</label>
+            <input
+              id="amount"
+              value={flipped ? amount * 60 : amount} //if문과 같은 삼항 연산자. 입력불가 상태일때 시간의 입력값을 분 단위로 보여줌
+              placeholder="Minutes"
+              type="number"
+              onChange={onChange} // input의 value 가 변경되었을때의 이벤트
+              disabled={flipped} // flipped 가 true 일때 입력 가능. hours input은 반대
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input
+              id="hours"
+              value={flipped ? amount : Math.round(amount / 60)} // 분단위를 시간단위로
+              placeholder="Hours"
+              type="number"
+              onChange={onChange}
+              disabled={!flipped}
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>Flip</button>
         </div>
       );
     }
