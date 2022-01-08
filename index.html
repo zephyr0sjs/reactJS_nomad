@@ -22,9 +22,10 @@
     const root = document.getElementById("root");
 
     function App() {
-      const [counter, setCounter] = React.useState(0);
+      const [counter, setCounter] = React.useState(0); //useState() 는 [변수, 함수] 두개의 인자를 생성함. counter는 변수, setCounter는 counter를 넣어 실행할 함수
       const onClick = () => {
-        setCounter(counter + 1);
+        // setCounter(counter + 1);
+        setCounter((current) => current + 1); //위와 같은 코드지만 이게 더 안전. 현재 State 를 변경하는 함수를 만드는 방식
       };
 
       return (
