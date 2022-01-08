@@ -68,11 +68,59 @@
     }
 
     function KmToMiles() {
-      return <h3>KM 2 MM</h3>;
+      const [inputVal, setInputVal] = React.useState();
+      const [toggled, setToggle] = React.useState(false);
+
+      function onChange(event) {
+        setInputVal(event.target.value);
+      }
+
+      function onReset() {
+        setInputVal(0);
+      }
+      function onToggle() {
+        setToggle((current) => !current);
+        onReset();
+      }
+
+      return (
+        <div>
+          <div>
+            <label htmlFor="km">Kilometers</label>
+            <input
+              id="km"
+              type="number"
+              placeholder="kilometers"
+              value={
+                toggled ? parseFloat((inputVal * 1.609).toFixed(2)) : inputVal
+              }
+              disabled={toggled}
+              onChange={onChange}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="mile">Miles</label>
+            <input
+              id="mile"
+              type="number"
+              placeholder="miles"
+              value={
+                toggled ? inputVal : parseFloat((inputVal / 1.609).toFixed(2))
+              }
+              disabled={!toggled}
+              onChange={onChange}
+            ></input>
+          </div>
+          <button onClick={onReset}>Reset</button>
+          <button onClick={onToggle}>
+            {toggled ? "Mile to Km" : "Km to Mile"}
+          </button>
+        </div>
+      );
     }
 
     function App() {
-      const [index, setIndex] = React.useState("0");
+      const [index, setIndex] = React.useState("1");
       const onSelect = (event) => {
         setIndex(event.target.value);
       };
