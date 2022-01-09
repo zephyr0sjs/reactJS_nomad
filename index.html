@@ -23,17 +23,17 @@
     const root = document.getElementById("root");
 
     // function Btn(prop) - 기본 인자로 property를 넘겨줄 수 있다.
-    function Btn({ text, big }) {
-      console.log(text, big);
+    function Btn({ text, onClick }) {
+      console.log(text, "was render");
       return (
         <button
+          onClick={onClick} // 인자로 받은 onClick은 단지 prop이므로 jsx 안에서 직접 실행시켜주어야 한다
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: "0",
             borderRadius: "10px",
-            fontSize: big ? 18 : 16,
           }}
         >
           {text}
@@ -41,11 +41,17 @@
       );
     }
 
+    // (최적화 방법) state가 변경된 부분만 다시 render 하고 변경되지 않는 부분은 render 되지 않게 처리
+    const MemorizedBtn = React.memo(Btn);
+
     function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
+
       return (
         <div>
-          <Btn text="Save Changes" big={true} />
-          <Btn text="Continue" big={false} />
+          <MemorizedBtn text={value} onClick={changeValue} />
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
