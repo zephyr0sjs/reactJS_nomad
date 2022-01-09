@@ -11,29 +11,29 @@
   </body>
   <script
     crossorigin
-    src="https://unpkg.com/react@17/umd/react.production.min.js"
+    src="https://unpkg.com/react@17.0.2/umd/react.development.js"
   ></script>
   <script
     crossorigin
     src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
   ></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
 
   <script type="text/babel">
     const root = document.getElementById("root");
 
     // function Btn(prop) - 기본 인자로 property를 넘겨줄 수 있다.
-    function Btn({ text, onClick }) {
-      console.log(text, "was render");
+    function Btn({ text, fontSize = 12 }) {
       return (
         <button
-          onClick={onClick} // 인자로 받은 onClick은 단지 prop이므로 jsx 안에서 직접 실행시켜주어야 한다
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: "0",
             borderRadius: "10px",
+            fontSize: fontSize,
           }}
         >
           {text}
@@ -41,17 +41,17 @@
       );
     }
 
-    // (최적화 방법) state가 변경된 부분만 다시 render 하고 변경되지 않는 부분은 render 되지 않게 처리
-    const MemorizedBtn = React.memo(Btn);
+    //prop 의 type 정의. 정해진 type과 다른 type을 입력한다면 error 표시
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
 
     function App() {
-      const [value, setValue] = React.useState("Save Changes");
-      const changeValue = () => setValue("Revert Changes");
-
       return (
         <div>
-          <MemorizedBtn text={value} onClick={changeValue} />
-          <MemorizedBtn text="Continue" />
+          <Btn text="Save Changes" fontSize={18} />
+          <Btn text="Continue" />
         </div>
       );
     }
